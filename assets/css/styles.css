@@ -70,6 +70,8 @@ body{
     --border-color: hsl(0, 0%, 94%);
     --redes-color: rgba(158, 186, 187, 0.886);
     --nav-color: hsla(0, 13%, 92%, 0.779);
+    --fondo-boton: orange;
+    --btn-mas: rgb(23, 21, 21);
 
     --size-card:270px;
     --size-card-btn:50px;
@@ -95,6 +97,8 @@ body.noche{
     --border-color: hsl(0, 0%, 20%);
     --redes-color: rgb(212, 225, 228);
     --nav-color: hsla(180, 91%, 36%, 0.799);
+    --fondo-boton: rgb(27, 147, 143);
+    --btn-mas: white;
 
     background-color: var(--body-color);
 }
@@ -109,6 +113,12 @@ div.noche > img{
     height: 60px;
     object-fit: contain;
     object-position: center center;
+}
+
+button:hover{
+    background-color: var(--fondo-boton);
+    color:var(--btn-mas)
+
 }
 
 nav{
