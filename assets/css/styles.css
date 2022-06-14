@@ -27,7 +27,24 @@
     --container-color: hsl(246, 16%, 12%);
     --border-color: hsl(0, 0%, 20%);
 */
-
+toast{
+    width: 400px;
+    height: 800px;
+    position: absolute;
+    top:0;
+    
+    background-color: rgb(255, 255, 255);
+    color: rgb(6, 66, 118);
+    text-align: center;
+    padding-top: 400px;
+    font-size: 1.5rem;
+    z-index: 100;
+    border: none;
+    display: none;
+}
+toast.mostrar{
+    display:block;
+}
 
 *{
     margin: 0;
@@ -54,7 +71,7 @@ body{
     --redes-color: rgba(158, 186, 187, 0.886);
     --nav-color: hsla(0, 13%, 92%, 0.779);
 
-    --size-card:300px;
+    --size-card:270px;
     --size-card-btn:50px;
 }
 
@@ -205,7 +222,7 @@ section{
 }
 
 section.contenedor-promotion{
-    width: 400px;
+    width: 100%;
 }
 
 section.contenedor-promotion > h2{
@@ -584,8 +601,20 @@ h2.home{
     
 }
 
+@media screen and ( max-width:345px ){
+    .contenedor-info-tienda{
+        font-size: 10px;
+    }
+}
 
-@media screen and ( min-width:660px ){
+@media screen and ( min-width:600px ){
+
+    section.contenedor-promotion{
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.5rem;
+    }
     
     section.contenedor-cards{
         display: flex;
@@ -595,27 +624,37 @@ h2.home{
     .card-item{
         min-width: 300px;
     }
-
+    
     section.contenedor-info{
         display: grid;
         grid-template-columns: repeat(4,1fr);
     }
+}
+
+@media screen and ( min-width:970px ){
+    
 
 
+
+    main{
+        position: relative;
+    }
 
     section.contenedor-promotion{
-        width: 600px;
-       /* position: relative;
-        left:calc(50% - 600px/2);*/
+        width: 400px;
+        position: absolute;
+        top: 110px;
+        left: 0px;
     }
 
     
 }
 
-@media screen and ( min-width:1080px ){
+
+@media screen and ( min-width:1280px ){
 
     main{
-        width: 1080px;
+        width: 1280px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -623,6 +662,11 @@ h2.home{
         width: 1080px;
         margin-left: auto;
         margin-right: auto;
+    }
+    section.contenedor-cards{
+        display: flex;
+        flex-direction: row;
+        overflow-x: visible;
     }
     
 }
