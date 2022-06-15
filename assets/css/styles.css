@@ -118,7 +118,6 @@ div.noche > img{
 button:hover{
     background-color: var(--fondo-boton);
     color:var(--btn-mas)
-
 }
 
 nav{
@@ -407,7 +406,7 @@ footer>h4{
 footer{
     width: 100vw;
     background-color: var(--container-color);
-    height: 215px;
+    /*height: 215px;*/
     
 }
 
@@ -455,6 +454,9 @@ div.info-producto-tienda {
     grid-template-rows: 1 auto;
 }
 
+
+ 
+
 .contenedor-labels-productos{
    /* border: 1px solid greenyellow;*/
     border-bottom:1px solid grey ;
@@ -480,11 +482,14 @@ div.info-producto-tienda {
     height: 20px;
     color: var(--text-color-light);
     font-size: medium;
-    background-color: rgb(19, 25, 18);
+    background-color: hsl(146deg 84% 30%);
     border: 1px solid rgba(32, 173, 159, 0);
     
 }
-
+.btn-producto-qty button:hover{
+    background-color: var(--fondo-boton);
+    color:var(--btn-mas)
+}
 
 .Price{
     grid-column-start: 2;

@@ -71,6 +71,8 @@ let btnClose = document.querySelector(".btn-close-tienda")
 let contenedorTienda = document.querySelector(".contenedor-tienda")
 let labelContCart = document.querySelector('.contador-general-cart')
 let contenedorInfoTienda = document.querySelector('.contenedor-info-tienda')
+let btnAddTienda = document.querySelectorAll('.btn-producto-qty button:first-child')
+let btnMinusTienda = document.querySelectorAll('.btn-producto-qty button:last-child')
 let btnsAdd = document.querySelectorAll('.btn-add')
 let precioTotal = document.getElementById('precio-total')
 let itemsTotal = document.getElementById('items-total')
@@ -111,24 +113,24 @@ function sumarTotal(){
     }
 
     
-    console.log('este se Qtotal dentro de mostrartienda',Qtotal);
+    //console.log('este se Qtotal dentro de mostrartienda',Qtotal);
     itemsTotal.textContent = `${Qtotal} items`
     precioTotal.textContent = `Total $ ${Pt}.00`
     labelContCart.textContent = Qtotal
 
     localStorage.setItem('items',JSON.stringify(Cart))
     localStorage.setItem('Qt',JSON.stringify(Qtotal))
-    console.log('entra a sumar precio Qtotal y Pt','CART DENTRO DE SUMARTOTAL',Cart);
-    console.log('valor de Qtotal dentro de sumartoal es',Qtotal, 'Pt DENTRO DE SUMAR TOTAL ES',Pt );
+    //console.log('entra a sumar precio Qtotal y Pt','CART DENTRO DE SUMARTOTAL',Cart);
+    //console.log('valor de Qtotal dentro de sumartoal es',Qtotal, 'Pt DENTRO DE SUMAR TOTAL ES',Pt );
 }
 
 function mostrarTienda(Qt,Cart){
 
-    console.log('entra a funcion mostrar tienda')
-    console.log('este es Qt dentro de mostrartienda',Qt,'este es Cart dentro de mostrar tienda',Cart);
+    //console.log('entra a funcion mostrar tienda')
+    //console.log('este es Qt dentro de mostrartienda',Qt,'este es Cart dentro de mostrar tienda',Cart);
 
     if( Qt < 1){
-        console.log('contadorGeneral Qt esta en', Qt);
+        //console.log('contadorGeneral Qt esta en', Qt);
         fragmentHTML+= `
         <div class="img-vacio-tienda">
             <img src="./assets/images/empty-cart.png" alt="">
@@ -149,8 +151,8 @@ function mostrarTienda(Qt,Cart){
             </div>`
 
         for(let item of Cart){
-        if(item.quantity > 0){
-           
+            if(item.quantity > 0){
+            
             fragmentHTML+= `        
             <div class="info-producto-tienda">       
                 <div class="contenedor-img-producto">
@@ -161,97 +163,163 @@ function mostrarTienda(Qt,Cart){
                 <span>$${item.price}.00</span>
                 <span>${item.quantity}</span>
                 <div class="btn-producto-qty">
-                <button>+</button>
-                <button>-</button>
+                <button class='${item.id}'>+</button>
+                <button class='${item.id}'>-</button>
                 </div>
                 </div>
                 `
             } 
         }
-        console.log(fragmentHTML)
+        //console.log(fragmentHTML)
         contenedorInfoTienda.innerHTML = fragmentHTML        
         fragmentHTML=''
-   
+
+        btnAddTienda = document.querySelectorAll('.btn-producto-qty button:first-child')
+        btnMinusTienda = document.querySelectorAll('.btn-producto-qty button:last-child')
+        //console.log('SELECTOR BTN + TIENDA',btnAddTienda,'SELECTOR BTN - TIENDA',btnMinusTienda);
+        
     }
+
+
+    btnAddTienda.forEach(item=>{
+        item.addEventListener('click', event =>{
+        
+           // console.log('ENTRA A BTN ADD TIENDA');
+            let IdEvento = parseInt(event.target.classList)
+           // console.log('ESTE ES IDEVENTO DENTRO DE BTN ADD TIENDA',IdEvento);   
+                
+                for(let element of Cart){
+                    if( element.id === IdEvento ){
+                        if( element.stock > element.quantity){
+                                element.quantity++
+                                //console.log('entre al aumento de quantity TIENDA', element.quantity)
+                            }   
+                            else
+                            {
+                                alert('NO HAY STOCK DEL PRODUCTO SELECCIONADO')
+                            }
+                        }
+                    }
+        
+                sumarTotal()
+                Qt= JSON.parse(localStorage.getItem('Qt'))
+                mostrarTienda(Qt,Cart)
+        })
+    })
+
+
+    btnMinusTienda.forEach(item=>{
+        item.addEventListener('click', event =>{
+            //console.log('ENTRA A BTN MINUS TIENDA');
+            let IdEvento = parseInt(event.target.classList)  
+           // console.log('ESTE ES IDEVENTO DENTRO DE BTN MINUS TIENDA',IdEvento);    
+            
+            for(let element of Cart){
+                
+                if( element.id === IdEvento ){
+                            element.quantity--
+                            console.log('entre al DISMINUCION de quantity TIENDA', element.quantity)
+                    }
+                }
+
+            sumarTotal()
+            Qt= JSON.parse(localStorage.getItem('Qt'))
+            mostrarTienda(Qt,Cart)
+        })
+
+        
+    })
+    
+
+    btnCheckout.addEventListener('click',() => {
+    
+
+        for (const elemento of Cart) {
+            elemento.stock -= elemento.quantity
+            elemento.quantity = 0
+        }
+                
+        localStorage.setItem('Qt',JSON.stringify(0))   
+        localStorage.setItem('items', JSON.stringify(Cart))
+    
+        Cart = JSON.parse(localStorage.getItem('items'))
+        Qt = JSON.parse(localStorage.getItem('Qt'))
+    
+        labelContCart.textContent = Qt
+        mostrarCards()
+        mostrarTienda(Qt,Cart)    
+        
+        let toast = document.querySelector('toast')
+        toast.classList.toggle("mostrar") //agregar la clase
+        
+        setTimeout(() => {
+            
+            toast.classList.toggle("mostrar") // quitarla
+        }, 3000);
+    })
+
 }
 
 
-mostrarCards()
-sumarTotal()
-Qt = JSON.parse(localStorage.getItem('Qt'))
-Cart = JSON.parse(localStorage.getItem('items'))
-mostrarTienda(Qt,Cart)
-labelContCart.textContent = Qt
 
-
-
-btnsAdd = document.querySelectorAll('.btn-add')
-console.log(btnsAdd);
-
-           
-        
-        
-        
-        
-       
-        
-        //--CONTADOR TIENDA Y PUBLICACON ELEMENTOS EN TIENDA
-btnsAdd.forEach(item => {
-    item.addEventListener('click', event => {
-                
-    console.log('SI ENTRA AL EVENTO BTN CLICK');
-
-    let IdEvento = parseInt(event.target.id)   
+document.addEventListener("DOMContentLoaded", () =>{
+    Qt = JSON.parse(localStorage.getItem('Qt'))
+    Cart = JSON.parse(localStorage.getItem('items'))
+    mostrarCards()
+    //sumarTotal()
+   // mostrarTienda(Qt,Cart)
+    //labelContCart.textContent = Qt
     
-    for(let element of Cart){
-        if( element.id === IdEvento ){
-            if( element.stock > element.quantity){
-                    element.quantity++
-                    console.log('entre al aumento de quantity', element.quantity)
-                }   
-                else
-                {
-                    alert('NO HAY STOCK DEL PRODUCTO SELECCIONADO')
+    btnsAdd = document.querySelectorAll('.btn-add')
+    console.log(btnsAdd);
+    eventoBotonesAñadir()
+})
+
+function eventoBotonesAñadir(){
+    btnsAdd.forEach(item => {
+        
+        //console.log('entra a evento btnsADD',btnsAdd);
+        item.addEventListener('click', event => {            
+        
+        let IdEvento = parseInt(event.target.id)   
+        
+        for(let element of Cart){
+            if( element.id === IdEvento ){
+                if( element.stock > element.quantity){
+                        element.quantity++
+                        //console.log('entre al aumento de quantity', element.quantity)
+                    }   
+                    else
+                    {
+                        alert('NO HAY STOCK DEL PRODUCTO SELECCIONADO')
+                    }
                 }
             }
-        }
-   
-
-    sumarTotal()
-    Qt= JSON.parse(localStorage.getItem('Qt'))
-    mostrarTienda(Qt,Cart)
-    
-   
+        sumarTotal()
+        Qt= JSON.parse(localStorage.getItem('Qt'))
+        mostrarTienda(Qt,Cart)
+       
+       
+        })
     })
-})
+}
 
 
-btnCheckout.addEventListener('click',() => {
-    
 
-    for (const elemento of Cart) {
-        elemento.stock -= elemento.quantity
-        elemento.quantity = 0
-    }
-            
-    localStorage.setItem('Qt',JSON.stringify(0))   
-    localStorage.setItem('items', JSON.stringify(Cart))
 
-    Cart = JSON.parse(localStorage.getItem('items'))
-    Qt = JSON.parse(localStorage.getItem('Qt'))
+       
+        
+//-----CONTADOR TIENDA Y PUBLICACON ELEMENTOS EN TIENDA
 
-    labelContCart.textContent = Qt
-    mostrarCards()
-    mostrarTienda(Qt,Cart)    
-    
-    let toast = document.querySelector('toast')
-    toast.classList.toggle("mostrar") //agregar la clase
-    
-    setTimeout(() => {
-        toast.classList.toggle("mostrar") // quitarla
-        window.location.reload()
-    }, 3000);
-})
+
+//------------botnes adicion/resta en tienda---------
+
+
+
+
+
+//---checkcout button---------------------
+
 
 
 //--------------
