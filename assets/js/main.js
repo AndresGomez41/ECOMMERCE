@@ -171,31 +171,16 @@ function mostrarTienda(Qt,Cart){
         console.log(fragmentHTML)
         contenedorInfoTienda.innerHTML = fragmentHTML        
         fragmentHTML=''
-    /*
-        let Qtotal = 0
-        let Pt = 0
-        for( let element of Cart){
-            Qtotal += element.quantity
-            Pt += (element.quantity * element.price)
-        }
-
-        Qtotal = 100
-        console.log('este se Qtotal dentro de mostrartienda',Qtotal);
-        itemsTotal.textContent = `${Qtotal} items`
-        precioTotal.textContent = `Total $ ${Pt}.00`
-        labelContCart.textContent = Qtotal
-
-    localStorage.setItem('items',JSON.stringify(Cart))
-    localStorage.setItem('Qt',JSON.stringify(Qtotal))*/
+   
     }
 }
 
 
 mostrarCards()
 sumarTotal()
-mostrarTienda(Qt,Cart)
 Qt = JSON.parse(localStorage.getItem('Qt'))
 Cart = JSON.parse(localStorage.getItem('items'))
+mostrarTienda(Qt,Cart)
 labelContCart.textContent = Qt
 
 
@@ -228,55 +213,7 @@ btnsAdd.forEach(item => {
     sumarTotal()
     Qt= JSON.parse(localStorage.getItem('Qt'))
     mostrarTienda(Qt,Cart)
-    /*
-
-    contenedorInfoTienda.innerHTML=''     
-    fragmentHTML+= `
-            <div class="contenedor-labels-productos">
-                <span class="Price">Price</span>
-                <span class="Qty">Qty</span>
-            </div>`
-
-    for(let item of Cart){
-        if(item.quantity > 0){
-            console.log('ENTRA A IF DE QUANTITY VALOR ITEM.QUANTITY', item.quantity);
-            fragmentHTML+= `        
-            <div class="info-producto-tienda">       
-                <div class="contenedor-img-producto">
-                    <img class="img-producto" src="${item.image}" alt="">
-                </div>
-                <span>${item.name}</span>
-                <span>${item.category}</span>
-                <span>$${item.price}.00</span>
-                <span>${item.quantity}</span>
-                <div class="btn-producto-qty">
-                    <button>+</button>
-                    <button>-</button>
-                </div>
-            </div>
-            `
-        } 
-        console.log(fragmentHTML)
-    }
-
-    contenedorInfoTienda.innerHTML = fragmentHTML        
-    fragmentHTML=''
     
-    let Qt=0
-    let Pt = 0
-    for( let element of Cart){
-        Qt += element.quantity
-        Pt += (element.quantity * element.price)
-    }
-   
-    itemsTotal.textContent = `${Qt} items`
-    precioTotal.textContent = `Total $ ${Pt}.00`
-    labelContCart.textContent = Qt
-    
-    localStorage.setItem('items',JSON.stringify(Cart))
-    localStorage.setItem('Qt',JSON.stringify(Qt))
-
-        */
    
     })
 })
@@ -289,8 +226,7 @@ btnCheckout.addEventListener('click',() => {
         elemento.stock -= elemento.quantity
         elemento.quantity = 0
     }
-    
-        
+            
     localStorage.setItem('Qt',JSON.stringify(0))   
     localStorage.setItem('items', JSON.stringify(Cart))
 
@@ -299,18 +235,17 @@ btnCheckout.addEventListener('click',() => {
 
     labelContCart.textContent = Qt
     mostrarCards()
-    mostrarTienda(Qt,Cart)
-
-    //alert("Gracias por su compra");
-    window.location.reload()
-
+    mostrarTienda(Qt,Cart)    
+    
     let toast = document.querySelector('toast')
-    toast.classList.add('mostrar')
-    toast.textContent = 'GRACIAS POR SU COMPRA'
-   
-
-
+    toast.classList.toggle("mostrar") //agregar la clase
+    
+    setTimeout(() => {
+        toast.classList.toggle("mostrar") // quitarla
+        window.location.reload()
+    }, 3000);
 })
+
 
 //--------------
 

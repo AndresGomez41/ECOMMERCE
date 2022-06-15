@@ -97,7 +97,7 @@ body.noche{
     --border-color: hsl(0, 0%, 20%);
     --redes-color: rgb(212, 225, 228);
     --nav-color: hsla(180, 91%, 36%, 0.799);
-    --fondo-boton: rgb(27, 147, 143);
+    --fondo-boton: rgb(24, 195, 189);
     --btn-mas: white;
 
     background-color: var(--body-color);
