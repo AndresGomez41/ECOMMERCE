@@ -201,14 +201,21 @@ btnsAdd.forEach(item => {
                 
     console.log('SI ENTRA AL EVENTO BTN CLICK');
 
-    let IdEvento = parseInt(event.target.id)    
+    let IdEvento = parseInt(event.target.id)   
+    
     for(let element of Cart){
         if( element.id === IdEvento ){
-            element.quantity++
-           
-            console.log('entre al aumento de quantity', element.quantity)
+            if( element.stock > element.quantity){
+                    element.quantity++
+                    console.log('entre al aumento de quantity', element.quantity)
+                }   
+                else
+                {
+                    alert('NO HAY STOCK DEL PRODUCTO SELECCIONADO')
+                }
+            }
         }
-    }
+   
 
     sumarTotal()
     Qt= JSON.parse(localStorage.getItem('Qt'))
